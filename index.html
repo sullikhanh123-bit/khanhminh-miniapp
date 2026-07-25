@@ -4,102 +4,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>KhanhMinh Mini App</title>
 
-    <!-- Telegram SDK -->
+    <!-- Telegram Mini App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Propush SDK -->
-    <script src="//libtl.com/sdk.js"
+    <!-- Monetag SDK -->
+    <script
+        src="//libtl.com/sdk.js"
         data-zone="11395263"
-        data-sdk="show_11395263"></script>
+        data-sdk="show_11395263">
+    </script>
 
     <style>
-        body {
-            margin: 0;
-            background: #1f2937;
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
         }
 
-        .card {
-            background: #374151;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            width: 320px;
+        body{
+            background:#1f2937;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
         }
 
-        h1 {
-            margin-top: 0;
+        .card{
+
+            width:340px;
+            background:#374151;
+            border-radius:18px;
+            padding:30px;
+            text-align:center;
+
         }
 
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
+        h1{
+
+            margin-bottom:10px;
+
         }
 
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
+        p{
+
+            color:#ddd;
+            margin-bottom:25px;
+
         }
+
+        button{
+
+            width:100%;
+            padding:14px;
+            font-size:18px;
+            border:none;
+            border-radius:12px;
+            cursor:pointer;
+            background:#10b981;
+            color:white;
+
+        }
+
+        button:hover{
+
+            opacity:.9;
+
+        }
+
+        #result{
+
+            margin-top:20px;
+            font-size:16px;
+            color:#FFD700;
+
+        }
+
     </style>
 
 </head>
 
 <body>
 
-    <div class="card">
+<div class="card">
 
-        <h1>🎉 KhanhMinh Mini App</h1>
+<h1>🎁 KhanhMinh Mini App</h1>
 
-        <p>Test quảng cáo Propush</p>
+<p>Xem quảng cáo để nhận thưởng.</p>
 
-        <button onclick="showAd()">
-            📺 Xem quảng cáo
-        </button>
+<button id="btn">
+📺 Xem quảng cáo
+</button>
 
-        <div id="result"></div>
+<div id="result"></div>
 
-    </div>
+</div>
 
-    <script>
+<script>
 
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
 
-        function showAd() {
+const btn=document.getElementById("btn");
+const result=document.getElementById("result");
 
-            if (typeof show_11395263 === "function") {
+btn.onclick=function(){
 
-                Promise.resolve(show_11395263())
-                    .then(() => {
-                        document.getElementById("result").innerHTML =
-                            "✅ Đã xem quảng cáo!";
-                    })
-                    .catch(() => {
-                        document.getElementById("result").innerHTML =
-                            "❌ Không hiển thị quảng cáo.";
-                    });
+    result.innerHTML="⏳ Đang tải quảng cáo...";
 
-            } else {
+    if(typeof show_11395263!=="function"){
 
-                document.getElementById("result").innerHTML =
-                    "❌ SDK chưa tải xong.";
+        result.innerHTML="❌ SDK chưa tải.";
 
-            }
+        return;
 
-        }
+    }
 
-    </script>
+    show_11395263()
+
+    .then(()=>{
+
+        result.innerHTML="✅ Xem quảng cáo thành công.";
+
+    })
+
+    .catch((err)=>{
+
+        console.log(err);
+
+        result.innerHTML="❌ Không có quảng cáo hoặc đã xảy ra lỗi.";
+
+    });
+
+}
+
+</script>
 
 </body>
 
