@@ -1,66 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<html lang="vi">
 
-<script src='//libtl.com/sdk.js'
-        data-zone='11395263'
-        data-sdk='show_11395263'></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KhanhMinh Mini App</title>
 
-<style>
-...
-</style>
+    <!-- Telegram SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Propush SDK -->
+    <script src="//libtl.com/sdk.js"
+        data-zone="11395263"
+        data-sdk="show_11395263"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background: #1f2937;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #374151;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 
 </head>
-    <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KhanhMinh Mini App</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#1f2937;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-}
-.card{
-    text-align:center;
-    background:#374151;
-    padding:30px;
-    border-radius:16px;
-}
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-}
-</style>
-
-</head>
 <body>
 
-<div class="card">
-<h1>🎉 Mini App Ready</h1>
-<p>Hello Telegram!</p>
+    <div class="card">
 
-<button onclick="Telegram.WebApp.close()">
-Close
-</button>
+        <h1>🎉 KhanhMinh Mini App</h1>
 
-</div>
+        <p>Test quảng cáo Propush</p>
 
-<script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-</script>
+        <button onclick="showAd()">
+            📺 Xem quảng cáo
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+    <script>
+
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+
+        function showAd() {
+
+            if (typeof show_11395263 === "function") {
+
+                Promise.resolve(show_11395263())
+                    .then(() => {
+                        document.getElementById("result").innerHTML =
+                            "✅ Đã xem quảng cáo!";
+                    })
+                    .catch(() => {
+                        document.getElementById("result").innerHTML =
+                            "❌ Không hiển thị quảng cáo.";
+                    });
+
+            } else {
+
+                document.getElementById("result").innerHTML =
+                    "❌ SDK chưa tải xong.";
+
+            }
+
+        }
+
+    </script>
 
 </body>
+
 </html>
