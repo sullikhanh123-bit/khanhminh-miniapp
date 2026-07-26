@@ -3,22 +3,21 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>💸 Reward Land</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <!-- Telegram Mini App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>Reward Land</title>
 
-    <!-- Monetag SDK -->
-    <script
-        src="//libtl.com/sdk.js"
-        data-zone="11395263"
-        data-sdk="show_11395263">
-    </script>
+<link
+rel="stylesheet"
+href="style.css">
 
-    <link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script src="https://libtl.com/sdk.js" data-zone="11395263" data-sdk="show_11395263"></script>
 
 </head>
 
@@ -26,571 +25,656 @@
 
 <div class="app">
 
-    <!-- ================= HEADER ================= -->
+<!-- ===========================
+HEADER
+=========================== -->
 
-    <header class="topbar">
+<header class="topbar">
 
-        <div class="profile">
+<div class="profile">
 
-            <div class="avatar" id="avatar">
-                💸
-            </div>
+<div class="avatar">
 
-            <div class="profile-info">
+💸
 
-                <h2 id="username">
-                    Loading...
-                </h2>
+</div>
 
-                <p>
-                    Unlock your next reward today.
-                </p>
+<div class="profile-info">
 
-            </div>
+<h2 id="username">
 
-        </div>
+Reward User
 
-        <div class="coin-card">
+</h2>
 
-            <span class="coin-icon">
-                💰
-            </span>
+<p>
 
-            <span id="coin">
-                0
-            </span>
+Complete activities and earn rewards
 
-        </div>
+</p>
 
-    </header>
+</div>
 
-    <!-- ================= HOME ================= -->
+</div>
 
-    <main id="homeScreen" class="screen active">
+<div class="reward-card">
 
-        <section class="welcome-card">
+<span>
 
-            <h1>
-                💸 Reward Land
-            </h1>
+💰
 
-            <p>
-                Complete activities, unlock rewards and discover exciting bonus opportunities.
-            </p>
+</span>
 
-        </section>
+<span id="rewardBalance">
 
-        <!-- Reward Center -->
+0
 
-        <div class="menu-card">
+</span>
 
-            <div class="left">
+</div>
 
-                <div class="emoji">
-                    💸
-                </div>
+</header>
 
-                <div>
+<!-- ===========================
+HOME
+=========================== -->
 
-                    <h2>
-                        Reward Center
-                    </h2>
+<section
+id="homeScreen"
+class="screen active">
 
-                    <p>
-                        Start your first free reward activity.
-                    </p>
+<div class="welcome-card">
 
-                </div>
+<h1>
 
-            </div>
+💸 Reward Land
 
-            <button id="btnHamster">
+</h1>
 
-                START
+<p>
 
-            </button>
+Unlock cash reward opportunities by completing quick sponsored activities.
 
-        </div>
+Every completed activity gives you more rewards.
 
-        <!-- Reward Box -->
+</p>
 
-        <div class="menu-card">
+</div>
 
-            <div class="left">
+<!-- Reward Center -->
 
-                <div class="emoji">
-                    🎁
-                </div>
+<div class="menu-card">
 
-                <div>
+<div class="left">
 
-                    <h2>
-                        Reward Box
-                    </h2>
+<div class="emoji">
 
-                    <p>
-                        Open mystery rewards and surprise bonuses.
-                    </p>
+🎁
 
-                </div>
+</div>
 
-            </div>
+<div>
 
-            <button id="btnMystery">
+<h2>
 
-                OPEN
+Reward Center
 
-            </button>
+</h2>
 
-        </div>
+<p>
 
-        <!-- Daily Bonus -->
+Start earning rewards
 
-        <div class="menu-card">
+</p>
 
-            <div class="left">
+</div>
 
-                <div class="emoji">
-                    📅
-                </div>
+</div>
 
-                <div>
+<button id="btnReward">
 
-                    <h2>
-                        Daily Bonus
-                    </h2>
+START
 
-                    <p>
-                        Claim your daily reward every 24 hours.
-                    </p>
+</button>
 
-                </div>
+</div>
 
-            </div>
+<!-- Reward Box -->
 
-            <button id="btnDaily">
+<div class="menu-card">
 
-                CLAIM
+<div class="left">
 
-            </button>
+<div class="emoji">
 
-        </div>
+📦
 
-        <!-- Offers -->
+</div>
 
-        <div class="menu-card">
+<div>
 
-            <div class="left">
+<h2>
 
-                <div class="emoji">
-                    ⭐
-                </div>
+Reward Box
 
-                <div>
+</h2>
 
-                    <h2>
-                        Special Offers
-                    </h2>
+<p>
 
-                    <p>
-                        Complete featured activities for more rewards.
-                    </p>
+Open surprise rewards
 
-                </div>
+</p>
 
-            </div>
+</div>
 
-            <button id="btnShop">
+</div>
 
-                VIEW
+<button id="btnBox">
 
-            </button>
+OPEN
 
-        </div>
+</button>
 
-        <!-- Progress -->
+</div>
 
-        <div class="menu-card">
+<!-- Daily Bonus -->
 
-            <div class="left">
+<div class="menu-card">
 
-                <div class="emoji">
-                    🔥
-                </div>
+<div class="left">
 
-                <div>
+<div class="emoji">
 
-                    <h2>
-                        Reward Progress
-                    </h2>
+📅
 
-                    <p>
-                        Track completed activities and unlocked bonuses.
-                    </p>
+</div>
 
-                </div>
+<div>
 
-            </div>
+<h2>
 
-            <button id="btnAchievement">
+Daily Bonus
 
-                DETAILS
+</h2>
 
-            </button>
+<p>
 
-        </div>
+Claim today's reward
 
-    </main>
-        <!-- ================= REWARD CENTER ================= -->
+</p>
 
-    <section id="hamsterScreen" class="screen">
+</div>
 
-        <div class="screen-header">
+</div>
 
-            <button class="back-btn" id="backHome1">
-                ←
-            </button>
+<button id="btnDaily">
 
-            <h1>
-                💸 Reward Center
-            </h1>
+CLAIM
 
-        </div>
+</button>
 
-        <div class="coin-display">
+</div>
 
-            💰 <span id="hamsterCoin">0</span>
+<!-- Special Offers -->
 
-        </div>
+<div class="menu-card">
 
-        <div class="hamster-area">
+<div class="left">
 
-            <button id="hamsterBtn" class="hamster-btn">
+<div class="emoji">
 
-                🎁
+⭐
 
-            </button>
+</div>
 
-            <p>
+<div>
 
-                Tap to unlock your reward.
+<h2>
 
-            </p>
+Special Offers
 
-        </div>
+</h2>
 
-        <div class="boost-card">
+<p>
 
-            <h3>
+Premium reward opportunities
 
-                📺 Unlock More Rewards
+</p>
 
-            </h3>
+</div>
 
-            <p>
+</div>
 
-                Your first reward is free.
-                <br><br>
+<button id="btnOffer">
 
-                Every additional reward requires watching a short sponsored video.
+VIEW
 
-            </p>
+</button>
 
-            <button id="watchBoost">
+</div>
 
-                ▶ Continue
+<!-- Progress -->
 
-            </button>
+<div class="menu-card">
 
-            <div id="boostTimer">
+<div class="left">
 
-            </div>
+<div class="emoji">
 
-        </div>
+🔥
 
-        <div class="stats-card">
+</div>
 
-            <h3>
+<div>
 
-                📊 Reward Statistics
+<h2>
 
-            </h3>
+Reward Progress
 
-            <div class="stat-row">
+</h2>
 
-                <span>Rewards Claimed</span>
+<p>
 
-                <span id="totalTap">
+Track your achievements
 
-                    0
+</p>
 
-                </span>
+</div>
 
-            </div>
+</div>
 
-            <div class="stat-row">
+<button id="btnProgress">
 
-                <span>Total Rewards</span>
+OPEN
 
-                <span id="totalCoin">
+</button>
 
-                    0
+</div>
 
-                </span>
+</section>
+<!-- ==========================================
+REWARD CENTER
+========================================== -->
 
-            </div>
+<section id="rewardScreen" class="screen">
 
-        </div>
+<div class="screen-header">
 
-    </section>
+<button
+class="back-btn"
+id="backHome1">
 
-    <!-- ================= REWARD BOX ================= -->
+←
 
-    <section id="mysteryScreen" class="screen">
+</button>
 
-        <div class="screen-header">
+<h1>
 
-            <button class="back-btn" id="backHome2">
+🎁 Reward Center
 
-                ←
+</h1>
 
-            </button>
+</div>
 
-            <h1>
+<div class="reward-balance">
 
-                🎁 Reward Box
+<h2>
 
-            </h1>
+Current Rewards
 
-        </div>
+</h2>
 
-        <div class="key-card">
+<h1 id="rewardBalanceLarge">
 
-            <h3>
+0
 
-                🎟 Available Boxes
+</h1>
 
-            </h3>
+</div>
 
-            <h2 id="keyCount">
+<div class="reward-action">
 
-                1
+<div class="reward-icon">
 
-            </h2>
+🎁
 
-        </div>
+</div>
 
-        <div class="box-area">
+<h2>
 
-            <button id="openMysteryBox" class="box-btn">
+Free Reward
 
-                🎁
+</h2>
 
-            </button>
+<p>
 
-            <p>
+Your first reward is free.
+After that, complete one sponsored activity to unlock more rewards.
 
-                Open your free reward box.
+</p>
 
-            </p>
+<button id="claimReward">
 
-        </div>
+CLAIM REWARD
 
-        <button id="watchKeyAd" class="reward-btn">
+</button>
 
-            📺 Watch Ad
-            <br>
-            Unlock Another Box
+</div>
 
-        </button>
+</section>
 
-        <div id="rewardResult" class="reward-result">
+<!-- ==========================================
+REWARD BOX
+========================================== -->
 
-        </div>
+<section id="boxScreen" class="screen">
 
-    </section>
-        <!-- ================= DAILY BONUS ================= -->
+<div class="screen-header">
 
-    <section id="dailyScreen" class="screen">
+<button
+class="back-btn"
+id="backHome2">
 
-        <div class="screen-header">
+←
 
-            <button class="back-btn" id="backHome3">
-                ←
-            </button>
+</button>
 
-            <h1>
-                📅 Daily Bonus
-            </h1>
+<h1>
 
-        </div>
+📦 Reward Box
 
-        <div class="daily-card">
+</h1>
 
-            <h2>
+</div>
 
-                Claim Today's Bonus
+<div class="reward-action">
 
-            </h2>
+<div class="reward-icon">
 
-            <p>
+📦
 
-                Every day you can claim one free reward.
-                <br><br>
-                After claiming, watch a short sponsored video to unlock another bonus.
+</div>
 
-            </p>
+<h2>
 
-            <div class="daily-days">
+Mystery Reward
 
-                <div class="day active">
-                    Day 1
-                </div>
+</h2>
 
-                <div class="day">
-                    Day 2
-                </div>
+<p>
 
-                <div class="day">
-                    Day 3
-                </div>
+Every box contains a surprise reward.
+Watch one sponsored activity to unlock it.
 
-                <div class="day">
-                    Day 4
-                </div>
+</p>
 
-                <div class="day">
-                    Day 5
-                </div>
+<button id="openRewardBox">
 
-                <div class="day">
-                    Day 6
-                </div>
+OPEN BOX
 
-                <div class="day">
-                    Day 7
-                </div>
+</button>
 
-            </div>
+</div>
 
-            <button id="claimDaily">
+</section>
 
-                🎁 Claim Bonus
+<!-- ==========================================
+DAILY BONUS
+========================================== -->
 
-            </button>
+<section id="dailyScreen" class="screen">
 
-            <p id="dailyStatus">
+<div class="screen-header">
 
-            </p>
+<button
+class="back-btn"
+id="backHome3">
 
-        </div>
+←
 
-    </section>
+</button>
 
-    <!-- ================= SPECIAL OFFERS ================= -->
+<h1>
 
-    <section id="shopScreen" class="screen">
+📅 Daily Bonus
 
-        <div class="screen-header">
+</h1>
 
-            <button class="back-btn" id="backHome4">
-                ←
-            </button>
+</div>
 
-            <h1>
+<div class="reward-action">
 
-                ⭐ Special Offers
+<div class="reward-icon">
 
-            </h1>
+📅
 
-        </div>
+</div>
 
-        <div class="shop-grid">
+<h2>
 
-            <div class="shop-item">
+Daily Reward
 
-                <div class="skin">
+</h2>
 
-                    🎁
+<p>
 
-                </div>
+Claim your daily reward once every 24 hours.
 
-                <h3>
+</p>
 
-                    Reward Pack
+<button id="claimDaily">
 
-                </h3>
+CLAIM BONUS
 
-                <p>
+</button>
 
-                    Free Once
+</div>
 
-                </p>
+</section>
+<!-- ==========================================
+SPECIAL OFFERS
+========================================== -->
 
-                <button>
+<section id="offerScreen" class="screen">
 
-                    CLAIM
+<div class="screen-header">
 
-                </button>
+<button class="back-btn" id="backHome4">
 
-            </div>
+←
 
-            <div class="shop-item">
+</button>
 
-                <div class="skin">
+<h1>
 
-                    💸
+⭐ Special Offers
 
-                </div>
+</h1>
 
-                <h3>
+</div>
 
-                    Premium Reward
+<div class="offer-grid">
 
-                </h3>
+<div class="offer-card">
 
-                <p>
+<div class="offer-icon">
 
-                    Watch Ad
+💸
 
-                </p>
+</div>
 
-                <button id="buyGolden">
+<h2>
 
-                    UNLOCK
+Cash Reward
 
-                </button>
+</h2>
 
-            </div>
+<p>
 
-            <div class="shop-item">
+Watch one sponsored activity.
 
-                <div class="skin">
+</p>
 
-                    ⭐
+<button id="offerCash">
 
-                </div>
+UNLOCK
 
-                <h3>
+</button>
 
-                    VIP Bonus
+</div>
 
-                </h3>
+<div class="offer-card">
 
-                <p>
+<div class="offer-icon">
 
-                    Watch Ad
+🎁
 
-                </p>
+</div>
 
-                <button id="buyPink">
+<h2>
 
-                    CLAIM
+Bonus Reward
 
-                </button>
+</h2>
 
-            </div>
+<p>
 
-        </div>
+Limited daily reward.
 
-    </section>
+</p>
+
+<button id="offerBonus">
+
+CLAIM
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+REWARD PROGRESS
+========================================== -->
+
+<section id="progressScreen" class="screen">
+
+<div class="screen-header">
+
+<button class="back-btn" id="backHome5">
+
+←
+
+</button>
+
+<h1>
+
+🔥 Reward Progress
+
+</h1>
+
+</div>
+
+<div class="progress-card">
+
+<h2>
+
+Current Level
+
+</h2>
+
+<h1 id="rewardLevel">
+
+1
+
+</h1>
+
+</div>
+
+<div class="progress-card">
+
+<h2>
+
+Total Rewards
+
+</h2>
+
+<h1 id="rewardTotal">
+
+0
+
+</h1>
+
+</div>
+
+<div class="progress-card">
+
+<h2>
+
+Completed Activities
+
+</h2>
+
+<h1 id="activityTotal">
+
+0
+
+</h1>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+POPUP
+========================================== -->
+
+<div id="rewardPopup" class="popup">
+
+<div class="popup-content">
+
+<h2 id="popupTitle">
+
+🎉 Reward Ready
+
+</h2>
+
+<p id="popupMessage">
+
+Complete one sponsored activity to unlock your reward.
+
+</p>
+
+<button id="popupButton">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+FOOTER
+========================================== -->
+
+<footer>
+
+<p>
+
+© 2026 Reward Land
+
+</p>
+
+</footer>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
