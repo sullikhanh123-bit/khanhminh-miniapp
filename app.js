@@ -1,603 +1,632 @@
-/* ==========================================
-   TELEGRAM MINI APP
-========================================== */
+// =====================================
+// REWARD LAND
+// PART 1
+// =====================================
 
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ==========================================
-   USER INFO
-========================================== */
-
 const tg = window.Telegram.WebApp;
 
-const user = tg.initDataUnsafe?.user;
+const user = tg.initDataUnsafe?.user || {};
 
 const username = document.getElementById("username");
 
-if (user) {
+if (username) {
 
-    username.innerText =
-        user.first_name || "Player";
-
-}
-
-/* ==========================================
-   LOCAL STORAGE
-========================================== */
-
-let coin =
-    Number(localStorage.getItem("coin")) || 0;
-
-let totalTap =
-    Number(localStorage.getItem("totalTap")) || 0;
-
-let keys =
-    Number(localStorage.getItem("keys")) || 1;
-
-/* ==========================================
-   ELEMENTS
-========================================== */
-
-const coinText =
-    document.getElementById("coin");
-
-const hamsterCoin =
-    document.getElementById("hamsterCoin");
-
-const totalTapText =
-    document.getElementById("totalTap");
-
-const totalCoinText =
-    document.getElementById("totalCoin");
-
-const keyCount =
-    document.getElementById("keyCount");
-
-/* ==========================================
-   UPDATE UI
-========================================== */
-
-function updateUI() {
-
-    coinText.innerText = coin;
-
-    hamsterCoin.innerText = coin;
-
-    totalCoinText.innerText = coin;
-
-    totalTapText.innerText = totalTap;
-
-    keyCount.innerText = keys;
+    username.textContent = user.first_name || "Guest";
 
 }
 
-/* ==========================================
-   SAVE
-========================================== */
+// =====================================
+// LOCAL STORAGE
+// =====================================
 
-function saveGame() {
+let rewards = Number(localStorage.getItem("rewards")) || 0;
 
-    localStorage.setItem("coin", coin);
+let totalRewards = Number(localStorage.getItem("totalRewards")) || 0;
 
-    localStorage.setItem("totalTap", totalTap);
+let rewardLevel = Number(localStorage.getItem("rewardLevel")) || 1;
 
-    localStorage.setItem("keys", keys);
+// lượt miễn phí
 
-}
+let firstReward = localStorage.getItem("firstReward");
 
-/* ==========================================
-   SCREEN
-========================================== */
+if (firstReward === null) {
 
-const homeScreen =
-    document.getElementById("homeScreen");
+    firstReward = true;
 
-const hamsterScreen =
-    document.getElementById("hamsterScreen");
+} else {
 
-const mysteryScreen =
-    document.getElementById("mysteryScreen");
-
-const dailyScreen =
-    document.getElementById("dailyScreen");
-
-const shopScreen =
-    document.getElementById("shopScreen");
-
-const achievementScreen =
-    document.getElementById("achievementScreen");
-
-/* ==========================================
-   HIDE ALL
-========================================== */
-
-function hideAll() {
-
-    homeScreen.classList.remove("active");
-
-    hamsterScreen.classList.remove("active");
-
-    mysteryScreen.classList.remove("active");
-
-    dailyScreen.classList.remove("active");
-
-    shopScreen.classList.remove("active");
-
-    achievementScreen.classList.remove("active");
+    firstReward = firstReward === "true";
 
 }
 
-/* ==========================================
-   HOME
-========================================== */
+// =====================================
+// ELEMENTS
+// =====================================
 
-function goHome() {
+const rewardCounter = document.getElementById("coin");
 
-    hideAll();
+const rewardDisplay = document.getElementById("hamsterCoin");
 
-    homeScreen.classList.add("active");
+const totalTap = document.getElementById("totalTap");
+
+const totalCoin = document.getElementById("totalCoin");
+
+// =====================================
+// SAVE
+// =====================================
+
+function saveData(){
+
+    localStorage.setItem("rewards", rewards);
+
+    localStorage.setItem("totalRewards", totalRewards);
+
+    localStorage.setItem("rewardLevel", rewardLevel);
+
+    localStorage.setItem("firstReward", firstReward);
 
 }
 
-/* ==========================================
-   BUTTONS
-========================================== */
+// =====================================
+// UPDATE UI
+// =====================================
 
-document
-.getElementById("btnHamster")
-.onclick = () => {
+function updateUI(){
 
-    hideAll();
+    if(rewardCounter){
 
-    hamsterScreen.classList.add("active");
+        rewardCounter.textContent = rewards;
 
-};
+    }
 
-document
-.getElementById("btnMystery")
-.onclick = () => {
+    if(rewardDisplay){
 
-    hideAll();
+        rewardDisplay.textContent = rewards;
 
-    mysteryScreen.classList.add("active");
+    }
 
-};
+    if(totalTap){
 
-document
-.getElementById("btnDaily")
-.onclick = () => {
+        totalTap.textContent = totalRewards;
 
-    hideAll();
+    }
 
-    dailyScreen.classList.add("active");
+    if(totalCoin){
 
-};
+        totalCoin.textContent = rewards;
 
-document
-.getElementById("btnShop")
-.onclick = () => {
+    }
 
-    hideAll();
+    saveData();
 
-    shopScreen.classList.add("active");
+}
 
-};
+// =====================================
+// SCREEN
+// =====================================
 
-document
-.getElementById("btnAchievement")
-.onclick = () => {
+const screens = [
 
-    hideAll();
+    "homeScreen",
 
-    achievementScreen.classList.add("active");
+    "hamsterScreen",
 
-};
+    "mysteryScreen",
 
-/* ==========================================
-   BACK BUTTON
-========================================== */
+    "dailyScreen",
 
-document
-.getElementById("backHome1")
-.onclick = goHome;
+    "shopScreen",
 
-document
-.getElementById("backHome2")
-.onclick = goHome;
+    "achievementScreen"
 
-document
-.getElementById("backHome3")
-.onclick = goHome;
+];
 
-document
-.getElementById("backHome4")
-.onclick = goHome;
+function showScreen(id){
 
-document
-.getElementById("backHome5")
-.onclick = goHome;
+    screens.forEach(screen=>{
 
-/* ==========================================
-   START
-========================================== */
+        const page = document.getElementById(screen);
 
-updateUI();
-saveGame();
-/* ==========================================
-   HAMSTER CLICKER
-========================================== */
+        if(page){
 
-const hamsterBtn =
-    document.getElementById("hamsterBtn");
+            page.classList.remove("active");
 
-let boost = false;
+        }
 
-let boostTime = 0;
+    });
 
-const boostTimer =
-    document.getElementById("boostTimer");
+    document.getElementById(id).classList.add("active");
 
-hamsterBtn.onclick = () => {
+}
 
-    let earn = boost ? 2 : 1;
+// =====================================
+// HOME BUTTON
+// =====================================
 
-    coin += earn;
+document.getElementById("btnHamster").onclick = ()=>{
 
-    totalTap++;
-
-    updateUI();
-
-    saveGame();
+    showScreen("hamsterScreen");
 
 };
 
-/* ==========================================
-   BOOST TIMER
-========================================== */
+document.getElementById("btnMystery").onclick = ()=>{
 
-setInterval(() => {
+    showScreen("mysteryScreen");
 
-    if (boostTime > 0) {
+};
 
-        boostTime--;
+document.getElementById("btnDaily").onclick = ()=>{
 
-        boostTimer.innerText =
-            "⚡ x2 Coins: " + boostTime + "s";
+    showScreen("dailyScreen");
 
-        if (boostTime === 0) {
+};
 
-            boost = false;
+document.getElementById("btnShop").onclick = ()=>{
 
-            boostTimer.innerText =
-                "";
+    showScreen("shopScreen");
+
+};
+
+document.getElementById("btnAchievement").onclick = ()=>{
+
+    showScreen("achievementScreen");
+
+};
+
+// =====================================
+// BACK BUTTON
+// =====================================
+
+for(let i=1;i<=5;i++){
+
+    const btn=document.getElementById("backHome"+i);
+
+    if(btn){
+
+        btn.onclick=()=>{
+
+            showScreen("homeScreen");
 
         }
 
     }
 
-},1000);
-
-/* ==========================================
-   WATCH BOOST AD
-========================================== */
-
-document
-.getElementById("watchBoost")
-.onclick = () => {
-
-    if(typeof show_11395263 === "function"){
-
-        Promise.resolve(show_11395263())
-
-        .then(()=>{
-
-            boost = true;
-
-            boostTime = 30;
-
-            boostTimer.innerText =
-                "⚡ x2 Coins: 30s";
-
-        })
-
-        .catch(()=>{
-
-            alert("Không thể hiển thị quảng cáo.");
-
-        });
-
-    }
-
-    else{
-
-        alert("Monetag SDK chưa tải.");
-
-    }
-
-};
-
-/* ==========================================
-   MYSTERY BOX
-========================================== */
-
-const rewardResult =
-    document.getElementById("rewardResult");
-
-document
-.getElementById("openMysteryBox")
-.onclick = () => {
-
-    if(keys <= 0){
-
-        rewardResult.innerHTML =
-            "❌ Bạn không còn Key.";
-
-        return;
-
-    }
-
-    keys--;
-
-    let random =
-        Math.floor(Math.random()*100)+1;
-
-    let reward = 0;
-
-    let text = "";
-
-    if(random <= 50){
-
-        reward = 20;
-
-        text = "🥉 Common<br>+20 Coins";
-
-    }
-
-    else if(random <= 80){
-
-        reward = 50;
-
-        text = "🥈 Rare<br>+50 Coins";
-
-    }
-
-    else if(random <= 95){
-
-        reward = 100;
-
-        text = "🥇 Epic<br>+100 Coins";
-
-    }
-
-    else if(random <= 99){
-
-        reward = 500;
-
-        text = "💎 Legendary<br>+500 Coins";
-
-    }
-
-    else{
-
-        reward = 1000;
-
-        text = "🌈 Mythic<br>+1000 Coins";
-
-    }
-
-    coin += reward;
-
-    rewardResult.innerHTML = text;
-
-    updateUI();
-
-    saveGame();
-
-};
-
-/* ==========================================
-   WATCH AD FOR KEY
-========================================== */
-
-document
-.getElementById("watchKeyAd")
-.onclick = () => {
-
-    if(typeof show_11395263 === "function"){
-
-        Promise.resolve(show_11395263())
-
-        .then(()=>{
-
-            keys++;
-
-            updateUI();
-
-            saveGame();
-
-            rewardResult.innerHTML =
-                "🔑 +1 Key";
-
-        })
-
-        .catch(()=>{
-
-            alert("Quảng cáo chưa sẵn sàng.");
-
-        });
-
-    }
-
-};
-/* ==========================================
-   DAILY REWARD
-========================================== */
-
-const dailyStatus =
-    document.getElementById("dailyStatus");
-
-const claimDaily =
-    document.getElementById("claimDaily");
-
-claimDaily.onclick = () => {
-
-    const today =
-        new Date().toDateString();
-
-    const lastClaim =
-        localStorage.getItem("dailyReward");
-
-    if(lastClaim === today){
-
-        dailyStatus.innerHTML =
-            "❌ Bạn đã nhận thưởng hôm nay.";
-
-        return;
-
-    }
-
-    coin += 100;
-
-    localStorage.setItem(
-        "dailyReward",
-        today
-    );
-
-    updateUI();
-
-    saveGame();
-
-    dailyStatus.innerHTML =
-        "🎉 +100 Coins";
-
-};
-
-/* ==========================================
-   SHOP
-========================================== */
-
-document
-.getElementById("buyGolden")
-.onclick = () => {
-
-    if(coin < 5000){
-
-        alert("Không đủ Coin.");
-
-        return;
-
-    }
-
-    coin -= 5000;
-
-    updateUI();
-
-    saveGame();
-
-    alert("✨ Đã mua Golden Hamster!");
-
-};
-
-document
-.getElementById("buyPink")
-.onclick = () => {
-
-    if(coin < 10000){
-
-        alert("Không đủ Coin.");
-
-        return;
-
-    }
-
-    coin -= 10000;
-
-    updateUI();
-
-    saveGame();
-
-    alert("🩷 Đã mua Pink Hamster!");
-
-};
-
-/* ==========================================
-   ACHIEVEMENTS
-========================================== */
-
-function checkAchievement(){
-
-    if(totalTap >= 100){
-
-        console.log(
-            "Achievement: First Tap"
-        );
-
-    }
-
-    if(coin >= 10000){
-
-        console.log(
-            "Achievement: Rich Player"
-        );
-
-    }
-
 }
-
-setInterval(checkAchievement,1000);
-
-/* ==========================================
-   POPUP
-========================================== */
-
-const popup =
-    document.getElementById("rewardPopup");
-
-const popupReward =
-    document.getElementById("popupReward");
-
-const closePopup =
-    document.getElementById("closePopup");
-
-function showPopup(text){
-
-    popup.style.display =
-        "flex";
-
-    popupReward.innerHTML =
-        text;
-
-}
-
-closePopup.onclick = () => {
-
-    popup.style.display =
-        "none";
-
-};
-
-/* ==========================================
-   SAVE BEFORE EXIT
-========================================== */
-
-window.addEventListener(
-    "beforeunload",
-    () => {
-
-        saveGame();
-
-    }
-);
-
-/* ==========================================
-   START GAME
-========================================== */
 
 updateUI();
 
-goHome();
+console.log("Reward Land Loaded");
+// =====================================
+// PART 2
+// REWARD ENGINE
+// =====================================
 
-console.log(
-    "🐹 Coin Land Ready!"
-);
+function addReward(amount){
+
+    rewards += amount;
+
+    totalRewards++;
+
+    updateUI();
+
+}
+
+// =====================================
+// SHOW AD + CLAIM
+// =====================================
+
+async function claimReward(amount, title){
+
+    const ok = confirm(
+        title +
+        "\n\nWatch a short sponsored ad to claim your reward."
+    );
+
+    if(!ok){
+
+        return;
+
+    }
+
+    try{
+
+        if(typeof show_11395263 === "function"){
+
+            await show_11395263();
+
+        }
+
+        addReward(amount);
+
+        alert("🎉 Reward claimed successfully!");
+
+    }catch(error){
+
+        alert("⚠️ Ad unavailable. Please try again.");
+
+    }
+
+}
+
+// =====================================
+// REWARD CENTER
+// =====================================
+
+const rewardBtn = document.getElementById("hamsterBtn");
+
+if(rewardBtn){
+
+    rewardBtn.onclick = ()=>{
+
+        // Lần đầu miễn phí
+
+        if(firstReward){
+
+            firstReward = false;
+
+            addReward(10);
+
+            saveData();
+
+            alert("🎉 First reward claimed!");
+
+            return;
+
+        }
+
+        claimReward(
+
+            10,
+
+            "🎁 Reward Ready!"
+
+        );
+
+    };
+
+}
+
+// =====================================
+// CONTINUE BUTTON
+// =====================================
+
+const watchBtn = document.getElementById("watchBoost");
+
+if(watchBtn){
+
+    watchBtn.onclick = ()=>{
+
+        claimReward(
+
+            15,
+
+            "💸 Bonus Reward"
+
+        );
+
+    };
+
+}
+// =====================================
+// PART 3
+// REWARD BOX
+// DAILY BONUS
+// SPECIAL OFFERS
+// =====================================
+
+// ---------- Reward Box ----------
+
+const mysteryBtn = document.getElementById("openMysteryBox");
+
+if (mysteryBtn) {
+
+    mysteryBtn.onclick = () => {
+
+        claimReward(
+
+            20,
+
+            "🎁 Mystery Reward Ready!"
+
+        );
+
+    };
+
+}
+
+// ---------- Extra Reward ----------
+
+const extraBtn = document.getElementById("watchKeyAd");
+
+if (extraBtn) {
+
+    extraBtn.onclick = () => {
+
+        claimReward(
+
+            25,
+
+            "📦 Bonus Reward Ready!"
+
+        );
+
+    };
+
+}
+
+// ---------- Daily Bonus ----------
+
+const dailyBtn = document.getElementById("claimDaily");
+
+if (dailyBtn) {
+
+    dailyBtn.onclick = () => {
+
+        const today = new Date().toDateString();
+
+        const claimed = localStorage.getItem("dailyReward");
+
+        if (claimed === today) {
+
+            alert("✅ Today's reward has already been claimed.");
+
+            return;
+
+        }
+
+        localStorage.setItem(
+
+            "dailyReward",
+
+            today
+
+        );
+
+        claimReward(
+
+            50,
+
+            "📅 Daily Bonus Ready!"
+
+        );
+
+    };
+
+}
+
+// ---------- Premium Reward ----------
+
+const premiumBtn = document.getElementById("buyGolden");
+
+if (premiumBtn) {
+
+    premiumBtn.onclick = () => {
+
+        claimReward(
+
+            30,
+
+            "⭐ Premium Reward Ready!"
+
+        );
+
+    };
+
+}
+
+// ---------- VIP Reward ----------
+
+const vipBtn = document.getElementById("buyPink");
+
+if (vipBtn) {
+
+    vipBtn.onclick = () => {
+
+        claimReward(
+
+            40,
+
+            "💎 VIP Reward Ready!"
+
+        );
+
+    };
+
+}
+// =====================================
+// PART 4
+// REWARD PROGRESS
+// START APP
+// =====================================
+
+// ---------- Reward Progress ----------
+
+function checkRewardLevel(){
+
+    if(totalRewards >= 10){
+
+        rewardLevel = 2;
+
+    }
+
+    if(totalRewards >= 30){
+
+        rewardLevel = 3;
+
+    }
+
+    if(totalRewards >= 60){
+
+        rewardLevel = 4;
+
+    }
+
+    if(totalRewards >= 100){
+
+        rewardLevel = 5;
+
+    }
+
+    saveData();
+
+}
+
+// ---------- Achievement ----------
+
+const achievementScreen =
+document.getElementById("achievementScreen");
+
+if(achievementScreen){
+
+    achievementScreen.innerHTML=`
+
+        <div class="screen-header">
+
+            <button
+                class="back-btn"
+                id="backAchievement">
+
+                ←
+
+            </button>
+
+            <h1>
+
+                🔥 Reward Progress
+
+            </h1>
+
+        </div>
+
+        <div class="achievement-list">
+
+            <div class="achievement">
+
+                <h3>
+
+                    ⭐ Current Level
+
+                </h3>
+
+                <p id="levelText">
+
+                    Level 1
+
+                </p>
+
+            </div>
+
+            <div class="achievement">
+
+                <h3>
+
+                    🎁 Total Rewards
+
+                </h3>
+
+                <p id="rewardText">
+
+                    0
+
+                </p>
+
+            </div>
+
+            <div class="achievement">
+
+                <h3>
+
+                    📈 Total Activities
+
+                </h3>
+
+                <p id="activityText">
+
+                    0
+
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+// ---------- Refresh Progress ----------
+
+function refreshProgress(){
+
+    checkRewardLevel();
+
+    const level=document.getElementById("levelText");
+
+    const reward=document.getElementById("rewardText");
+
+    const activity=document.getElementById("activityText");
+
+    if(level){
+
+        level.innerHTML=
+
+        "Level "+rewardLevel;
+
+    }
+
+    if(reward){
+
+        reward.innerHTML=
+
+        rewards;
+
+    }
+
+    if(activity){
+
+        activity.innerHTML=
+
+        totalRewards;
+
+    }
+
+}
+
+// ---------- Back Button ----------
+
+setTimeout(()=>{
+
+    const back=document.getElementById("backAchievement");
+
+    if(back){
+
+        back.onclick=()=>{
+
+            showScreen("homeScreen");
+
+        }
+
+    }
+
+},100);
+
+// ---------- Auto Refresh ----------
+
+setInterval(()=>{
+
+    refreshProgress();
+
+},1000);
+
+// ---------- Start ----------
+
+updateUI();
+
+refreshProgress();
+
+showScreen("homeScreen");
+
+console.log("💸 Reward Land Ready");
