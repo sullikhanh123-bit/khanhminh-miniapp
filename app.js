@@ -1,632 +1,1859 @@
-// =====================================
-// REWARD LAND
-// PART 1
-// =====================================
+/* ==========================================
+REWARD LAND
+APP.JS - PART 1
+CORE SYSTEM
+========================================== */
 
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
+
+/* ==========================================
+TELEGRAM MINI APP
+========================================== */
 
 const tg = window.Telegram.WebApp;
 
-const user = tg.initDataUnsafe?.user || {};
+if(tg){
 
-const username = document.getElementById("username");
+    tg.ready();
 
-if (username) {
-
-    username.textContent = user.first_name || "Guest";
+    tg.expand();
 
 }
 
-// =====================================
-// LOCAL STORAGE
-// =====================================
 
-let rewards = Number(localStorage.getItem("rewards")) || 0;
 
-let totalRewards = Number(localStorage.getItem("totalRewards")) || 0;
+/* ==========================================
+USER SYSTEM
+========================================== */
 
-let rewardLevel = Number(localStorage.getItem("rewardLevel")) || 1;
+const usernameElement = document.getElementById("username");
 
-// lượt miễn phí
 
-let firstReward = localStorage.getItem("firstReward");
+function loadTelegramUser(){
 
-if (firstReward === null) {
+    if(
+        tg &&
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+    ){
 
-    firstReward = true;
+        const user = tg.initDataUnsafe.user;
 
-} else {
 
-    firstReward = firstReward === "true";
+        usernameElement.innerText =
+        user.first_name || "Reward User";
+
+
+    }
 
 }
 
-// =====================================
-// ELEMENTS
-// =====================================
 
-const rewardCounter = document.getElementById("coin");
+loadTelegramUser();
 
-const rewardDisplay = document.getElementById("hamsterCoin");
 
-const totalTap = document.getElementById("totalTap");
 
-const totalCoin = document.getElementById("totalCoin");
 
-// =====================================
-// SAVE
-// =====================================
+/* ==========================================
+LOCAL STORAGE DATA
+========================================== */
+
+
+let userData = {
+
+
+    balance:0,
+
+    totalReward:0,
+
+    activities:0,
+
+    level:1,
+
+    lastDaily:null,
+
+
+};
+
+
+
+function loadData(){
+
+
+    const saved =
+    localStorage.getItem("rewardLandData");
+
+
+    if(saved){
+
+        userData =
+        JSON.parse(saved);
+
+    }
+
+
+}
+
+
 
 function saveData(){
 
-    localStorage.setItem("rewards", rewards);
-
-    localStorage.setItem("totalRewards", totalRewards);
-
-    localStorage.setItem("rewardLevel", rewardLevel);
-
-    localStorage.setItem("firstReward", firstReward);
+    localStorage.setItem(
+        "rewardLandData",
+        JSON.stringify(userData)
+    );
 
 }
 
-// =====================================
-// UPDATE UI
-// =====================================
+
+
+loadData();
+
+
+
+
+/* ==========================================
+UPDATE UI
+========================================== */
+
 
 function updateUI(){
 
-    if(rewardCounter){
 
-        rewardCounter.textContent = rewards;
+    document.getElementById(
+        "rewardBalance"
+    ).innerText =
+    userData.balance;
 
-    }
 
-    if(rewardDisplay){
 
-        rewardDisplay.textContent = rewards;
+    document.getElementById(
+        "rewardBalanceLarge"
+    ).innerText =
+    userData.balance;
 
-    }
 
-    if(totalTap){
 
-        totalTap.textContent = totalRewards;
+    document.getElementById(
+        "rewardTotal"
+    ).innerText =
+    userData.totalReward;
 
-    }
 
-    if(totalCoin){
 
-        totalCoin.textContent = rewards;
+    document.getElementById(
+        "activityTotal"
+    ).innerText =
+    userData.activities;
 
-    }
 
-    saveData();
 
-}
+    document.getElementById(
+        "rewardLevel"
+    ).innerText =
+    userData.level;
 
-// =====================================
-// SCREEN
-// =====================================
 
-const screens = [
-
-    "homeScreen",
-
-    "hamsterScreen",
-
-    "mysteryScreen",
-
-    "dailyScreen",
-
-    "shopScreen",
-
-    "achievementScreen"
-
-];
-
-function showScreen(id){
-
-    screens.forEach(screen=>{
-
-        const page = document.getElementById(screen);
-
-        if(page){
-
-            page.classList.remove("active");
-
-        }
-
-    });
-
-    document.getElementById(id).classList.add("active");
 
 }
 
-// =====================================
-// HOME BUTTON
-// =====================================
-
-document.getElementById("btnHamster").onclick = ()=>{
-
-    showScreen("hamsterScreen");
-
-};
-
-document.getElementById("btnMystery").onclick = ()=>{
-
-    showScreen("mysteryScreen");
-
-};
-
-document.getElementById("btnDaily").onclick = ()=>{
-
-    showScreen("dailyScreen");
-
-};
-
-document.getElementById("btnShop").onclick = ()=>{
-
-    showScreen("shopScreen");
-
-};
-
-document.getElementById("btnAchievement").onclick = ()=>{
-
-    showScreen("achievementScreen");
-
-};
-
-// =====================================
-// BACK BUTTON
-// =====================================
-
-for(let i=1;i<=5;i++){
-
-    const btn=document.getElementById("backHome"+i);
-
-    if(btn){
-
-        btn.onclick=()=>{
-
-            showScreen("homeScreen");
-
-        }
-
-    }
-
-}
 
 updateUI();
 
-console.log("Reward Land Loaded");
-// =====================================
-// PART 2
-// REWARD ENGINE
-// =====================================
 
-function addReward(amount){
 
-    rewards += amount;
 
-    totalRewards++;
+/* ==========================================
+SCREEN SYSTEM
+========================================== */
 
-    updateUI();
+
+const screens = document.querySelectorAll(
+    ".screen"
+);
+
+
+
+function showScreen(id){
+
+
+    screens.forEach(screen=>{
+
+
+        screen.classList.remove(
+            "active"
+        );
+
+
+    });
+
+
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
 
 }
 
-// =====================================
-// SHOW AD + CLAIM
-// =====================================
 
-async function claimReward(amount, title){
 
-    const ok = confirm(
-        title +
-        "\n\nWatch a short sponsored ad to claim your reward."
+
+
+/* ==========================================
+HOME BUTTONS
+========================================== */
+
+
+document
+.getElementById("btnReward")
+.onclick = ()=>{
+
+    showScreen(
+        "rewardScreen"
     );
 
-    if(!ok){
+};
+
+
+
+document
+.getElementById("btnBox")
+.onclick = ()=>{
+
+    showScreen(
+        "boxScreen"
+    );
+
+};
+
+
+
+document
+.getElementById("btnDaily")
+.onclick = ()=>{
+
+    showScreen(
+        "dailyScreen"
+    );
+
+};
+
+
+
+document
+.getElementById("btnOffer")
+.onclick = ()=>{
+
+    showScreen(
+        "offerScreen"
+    );
+
+};
+
+
+
+document
+.getElementById("btnProgress")
+.onclick = ()=>{
+
+    showScreen(
+        "progressScreen"
+    );
+
+};
+
+
+
+
+
+/* ==========================================
+BACK BUTTONS
+========================================== */
+
+
+document
+.getElementById("backHome1")
+.onclick = ()=>{
+
+    showScreen(
+        "homeScreen"
+    );
+
+};
+
+
+document
+.getElementById("backHome2")
+.onclick = ()=>{
+
+    showScreen(
+        "homeScreen"
+    );
+
+};
+
+
+document
+.getElementById("backHome3")
+.onclick = ()=>{
+
+    showScreen(
+        "homeScreen"
+    );
+
+};
+
+
+document
+.getElementById("backHome4")
+.onclick = ()=>{
+
+    showScreen(
+        "homeScreen"
+    );
+
+};
+
+
+document
+.getElementById("backHome5")
+.onclick = ()=>{
+
+    showScreen(
+        "homeScreen"
+    );
+
+};
+
+
+
+
+
+/* ==========================================
+POPUP SYSTEM
+========================================== */
+
+
+const popup =
+document.getElementById(
+    "rewardPopup"
+);
+
+
+const popupTitle =
+document.getElementById(
+    "popupTitle"
+);
+
+
+const popupMessage =
+document.getElementById(
+    "popupMessage"
+);
+
+
+
+function openPopup(
+    title,
+    message
+){
+
+
+    popupTitle.innerText =
+    title;
+
+
+    popupMessage.innerText =
+    message;
+
+
+
+    popup.style.display =
+    "flex";
+
+
+}
+
+
+
+function closePopup(){
+
+
+    popup.style.display =
+    "none";
+
+
+}
+
+
+
+document
+.getElementById("popupButton")
+.onclick =
+()=>{
+
+    closePopup();
+
+};
+
+
+
+
+/* ==========================================
+INITIALIZE
+========================================== */
+
+
+console.log(
+    "Reward Land Loaded 🚀"
+);
+/* ==========================================
+REWARD LAND
+APP.JS - PART 2
+REWARD LOGIC
+========================================== */
+
+
+
+/* ==========================================
+ADD REWARD SYSTEM
+========================================== */
+
+
+function addReward(amount){
+
+
+    userData.balance += amount;
+
+
+    userData.totalReward += amount;
+
+
+    userData.activities++;
+
+
+
+    checkLevel();
+
+
+
+    saveData();
+
+
+    updateUI();
+
+
+}
+
+
+
+
+
+/* ==========================================
+LEVEL SYSTEM
+========================================== */
+
+
+function checkLevel(){
+
+
+    let newLevel =
+    Math.floor(
+        userData.activities / 5
+    ) + 1;
+
+
+
+    userData.level =
+    newLevel;
+
+
+}
+
+
+
+
+/* ==========================================
+FREE REWARD
+========================================== */
+
+
+let firstRewardClaimed =
+localStorage.getItem(
+    "firstRewardClaimed"
+);
+
+
+
+document
+.getElementById("claimReward")
+.onclick = ()=>{
+
+
+    if(!firstRewardClaimed){
+
+
+        addReward(10);
+
+
+
+        localStorage.setItem(
+            "firstRewardClaimed",
+            "true"
+        );
+
+
+
+        openPopup(
+
+            "🎉 Reward Claimed",
+
+            "+10 coins added to your balance"
+
+        );
+
+
+    }
+
+    else{
+
+
+        openPopup(
+
+            "🔒 Locked",
+
+            "Complete a sponsored activity to unlock more rewards."
+
+        );
+
+
+    }
+
+
+
+};
+
+
+
+
+
+
+/* ==========================================
+REWARD BOX
+========================================== */
+
+
+document
+.getElementById("openRewardBox")
+.onclick = ()=>{
+
+
+    const rewards = [
+
+        5,
+
+        10,
+
+        20,
+
+        50,
+
+        100
+
+    ];
+
+
+
+    const randomReward =
+    rewards[
+        Math.floor(
+            Math.random()
+            *
+            rewards.length
+        )
+    ];
+
+
+
+    addReward(
+        randomReward
+    );
+
+
+
+    openPopup(
+
+        "📦 Mystery Box Opened",
+
+        `You received +${randomReward} coins`
+
+    );
+
+
+
+};
+
+
+
+
+
+
+
+/* ==========================================
+DAILY BONUS
+========================================== */
+
+
+document
+.getElementById("claimDaily")
+.onclick = ()=>{
+
+
+    const now =
+    Date.now();
+
+
+
+    const last =
+    userData.lastDaily;
+
+
+
+    const cooldown =
+    24 * 60 * 60 * 1000;
+
+
+
+    if(
+        last &&
+        now - last < cooldown
+    ){
+
+
+        const remaining =
+        cooldown -
+        (now-last);
+
+
+
+        const hours =
+        Math.ceil(
+            remaining /
+            (1000*60*60)
+        );
+
+
+
+        openPopup(
+
+            "⏳ Come Back Later",
+
+            `Daily bonus available in ${hours} hours`
+
+        );
+
+
+
+        return;
+
+
+    }
+
+
+
+    userData.lastDaily =
+    now;
+
+
+
+    addReward(25);
+
+
+
+    openPopup(
+
+        "📅 Daily Bonus",
+
+        "+25 coins claimed successfully!"
+
+    );
+
+
+
+};
+
+
+
+
+
+
+
+
+/* ==========================================
+SPECIAL OFFERS
+========================================== */
+
+
+
+document
+.getElementById("offerCash")
+.onclick = ()=>{
+
+
+    openPopup(
+
+        "📺 Sponsored Activity",
+
+        "Watch a sponsored activity to unlock your reward."
+
+    );
+
+
+};
+
+
+
+
+
+document
+.getElementById("offerBonus")
+.onclick = ()=>{
+
+
+    addReward(15);
+
+
+
+    openPopup(
+
+        "⭐ Bonus Reward",
+
+        "+15 coins added!"
+
+    );
+
+
+};
+
+
+
+
+
+
+/* ==========================================
+POPUP CLOSE OUTSIDE
+========================================== */
+
+
+popup.onclick =
+(e)=>{
+
+
+    if(
+        e.target === popup
+    ){
+
+        closePopup();
+
+    }
+
+
+};
+
+
+
+
+
+/* ==========================================
+SYNC DATA
+========================================== */
+
+
+window.addEventListener(
+"beforeunload",
+()=>{
+
+
+    saveData();
+
+
+});
+
+
+
+console.log(
+"Reward System Loaded 🎁"
+);
+/* ==========================================
+REWARD LAND
+APP.JS - PART 3
+MONETAG ADS SYSTEM
+========================================== */
+
+
+
+/* ==========================================
+MONETAG CONFIG
+========================================== */
+
+
+let adCooldown = false;
+
+
+const adRewardAmount = 30;
+
+
+
+/* ==========================================
+SHOW MONETAG REWARDED ADS
+========================================== */
+
+
+function showRewardAd(
+    callback
+){
+
+
+
+    if(adCooldown){
+
+
+        openPopup(
+
+            "⏳ Please Wait",
+
+            "Please wait before watching another activity."
+
+        );
+
+
+        return;
+
+
+    }
+
+
+
+    adCooldown = true;
+
+
+
+    openPopup(
+
+        "📺 Loading Activity",
+
+        "Preparing sponsored activity..."
+
+    );
+
+
+
+
+
+    if(
+        typeof show_11395263 === "function"
+    ){
+
+
+
+        show_11395263()
+
+        .then(()=>{
+
+
+            console.log(
+                "Ad completed"
+            );
+
+
+
+            adCooldown = false;
+
+
+
+            callback();
+
+
+
+        })
+
+        .catch((error)=>{
+
+
+            console.log(
+                "Ad error",
+                error
+            );
+
+
+
+            adCooldown = false;
+
+
+
+            openPopup(
+
+                "⚠️ Advertisement Failed",
+
+                "Unable to load activity. Try again later."
+
+            );
+
+
+        });
+
+
+
+    }
+
+    else{
+
+
+        /*
+        TEST MODE
+        When SDK is unavailable
+        */
+
+
+        console.log(
+            "Monetag SDK missing - test mode"
+        );
+
+
+
+        setTimeout(()=>{
+
+
+            adCooldown=false;
+
+
+
+            callback();
+
+
+
+        },2000);
+
+
+
+    }
+
+
+
+
+}
+
+
+
+
+
+
+/* ==========================================
+CASH REWARD ACTIVITY
+========================================== */
+
+
+document
+.getElementById("offerCash")
+.onclick =
+()=>{
+
+
+    showRewardAd(()=>{
+
+
+        addReward(
+            adRewardAmount
+        );
+
+
+
+        openPopup(
+
+            "💰 Reward Received",
+
+            `+${adRewardAmount} coins from sponsored activity`
+
+        );
+
+
+    });
+
+
+
+};
+
+
+
+
+
+
+
+
+/* ==========================================
+REWARD CENTER LOCK SYSTEM
+========================================== */
+
+
+document
+.getElementById("claimReward")
+.onclick =
+()=>{
+
+
+
+    if(!firstRewardClaimed){
+
+
+
+        addReward(10);
+
+
+
+        localStorage.setItem(
+            "firstRewardClaimed",
+            "true"
+        );
+
+
+
+        firstRewardClaimed=true;
+
+
+
+        openPopup(
+
+            "🎁 First Reward",
+
+            "+10 coins received!"
+
+        );
+
+
+    }
+
+    else{
+
+
+        showRewardAd(()=>{
+
+
+            addReward(20);
+
+
+
+            openPopup(
+
+                "🎉 Reward Unlocked",
+
+                "+20 coins received after activity"
+
+            );
+
+
+        });
+
+
+
+    }
+
+
+
+};
+
+
+
+
+
+
+
+/* ==========================================
+BOX WITH ADS
+========================================== */
+
+
+document
+.getElementById("openRewardBox")
+.onclick =
+()=>{
+
+
+    showRewardAd(()=>{
+
+
+        const rewards=[
+
+            10,
+
+            25,
+
+            50,
+
+            100
+
+        ];
+
+
+
+        const reward =
+        rewards[
+            Math.floor(
+                Math.random()
+                *
+                rewards.length
+            )
+        ];
+
+
+
+        addReward(
+            reward
+        );
+
+
+
+        openPopup(
+
+            "📦 Mystery Box",
+
+            `You got +${reward} coins`
+
+        );
+
+
+
+    });
+
+
+
+};
+
+
+
+
+
+
+console.log(
+"Monetag System Loaded 📺"
+);
+/* ==========================================
+REWARD LAND
+APP.JS - PART 4
+MISSIONS + STREAK + USER SYSTEM
+========================================== */
+
+
+
+/* ==========================================
+TELEGRAM USER DATA
+========================================== */
+
+
+function saveTelegramUser(){
+
+
+    if(
+        tg &&
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+    ){
+
+
+        const user =
+        tg.initDataUnsafe.user;
+
+
+
+        userData.telegramId =
+        user.id;
+
+
+
+        userData.telegramName =
+        user.username || user.first_name;
+
+
+
+        saveData();
+
+
+    }
+
+
+}
+
+
+saveTelegramUser();
+
+
+
+
+
+
+/* ==========================================
+DAILY STREAK SYSTEM
+========================================== */
+
+
+function updateStreak(){
+
+
+    const today =
+    new Date()
+    .toDateString();
+
+
+
+    const lastLogin =
+    localStorage.getItem(
+        "lastLogin"
+    );
+
+
+
+    let streak =
+    Number(
+        localStorage.getItem(
+            "loginStreak"
+        )
+    ) || 0;
+
+
+
+    if(lastLogin !== today){
+
+
+
+        if(lastLogin){
+
+
+            const yesterday =
+            new Date();
+
+
+
+            yesterday.setDate(
+                yesterday.getDate()-1
+            );
+
+
+
+            if(
+                yesterday.toDateString()
+                === lastLogin
+            ){
+
+                streak++;
+
+
+            }
+            else{
+
+
+                streak=1;
+
+
+            }
+
+
+        }
+        else{
+
+
+            streak=1;
+
+
+        }
+
+
+
+        localStorage.setItem(
+            "loginStreak",
+            streak
+        );
+
+
+
+        localStorage.setItem(
+            "lastLogin",
+            today
+        );
+
+
+    }
+
+
+
+    userData.streak =
+    streak;
+
+
+
+    saveData();
+
+
+}
+
+
+
+updateStreak();
+
+
+
+
+
+
+
+/* ==========================================
+MISSIONS
+========================================== */
+
+
+const missions = {
+
+
+    dailyLogin:{
+
+        name:"Daily Login",
+
+        reward:10,
+
+        completed:false
+
+    },
+
+
+    openBox:{
+
+        name:"Open Reward Box",
+
+        reward:20,
+
+        completed:false
+
+    },
+
+
+    watchAd:{
+
+        name:"Watch Sponsored Activity",
+
+        reward:30,
+
+        completed:false
+
+    }
+
+
+
+};
+
+
+
+
+
+function completeMission(id){
+
+
+
+    let mission =
+    missions[id];
+
+
+
+    if(
+        !mission ||
+        mission.completed
+    ){
 
         return;
 
     }
 
-    try{
 
-        if(typeof show_11395263 === "function"){
 
-            await show_11395263();
+    mission.completed=true;
 
-        }
 
-        addReward(amount);
 
-        alert("🎉 Reward claimed successfully!");
+    addReward(
+        mission.reward
+    );
 
-    }catch(error){
 
-        alert("⚠️ Ad unavailable. Please try again.");
 
-    }
+    openPopup(
+
+        "✅ Mission Completed",
+
+        `${mission.name}: +${mission.reward} coins`
+
+    );
+
+
 
 }
 
-// =====================================
-// REWARD CENTER
-// =====================================
 
-const rewardBtn = document.getElementById("hamsterBtn");
 
-if(rewardBtn){
 
-    rewardBtn.onclick = ()=>{
 
-        // Lần đầu miễn phí
 
-        if(firstReward){
 
-            firstReward = false;
 
-            addReward(10);
+/* ==========================================
+ANTI SPAM CLICK
+========================================== */
 
-            saveData();
 
-            alert("🎉 First reward claimed!");
+let lastAction = 0;
 
-            return;
 
-        }
 
-        claimReward(
+function actionLock(){
 
-            10,
 
-            "🎁 Reward Ready!"
+    const now =
+    Date.now();
+
+
+
+    if(
+        now-lastAction < 1500
+    ){
+
+
+        openPopup(
+
+            "⚠️ Slow Down",
+
+            "Please wait a moment."
 
         );
 
-    };
+
+        return false;
+
+
+    }
+
+
+
+    lastAction =
+    now;
+
+
+
+    return true;
+
 
 }
 
-// =====================================
-// CONTINUE BUTTON
-// =====================================
 
-const watchBtn = document.getElementById("watchBoost");
 
-if(watchBtn){
 
-    watchBtn.onclick = ()=>{
 
-        claimReward(
 
-            15,
 
-            "💸 Bonus Reward"
 
+/* ==========================================
+CONNECT MISSION EVENTS
+========================================== */
+
+
+
+document
+.getElementById("claimDaily")
+.addEventListener(
+"click",
+()=>{
+
+
+    if(
+        actionLock()
+    ){
+
+
+        completeMission(
+            "dailyLogin"
         );
 
-    };
 
-}
-// =====================================
-// PART 3
-// REWARD BOX
-// DAILY BONUS
-// SPECIAL OFFERS
-// =====================================
+    }
 
-// ---------- Reward Box ----------
 
-const mysteryBtn = document.getElementById("openMysteryBox");
+});
 
-if (mysteryBtn) {
 
-    mysteryBtn.onclick = () => {
 
-        claimReward(
 
-            20,
 
-            "🎁 Mystery Reward Ready!"
+document
+.getElementById("openRewardBox")
+.addEventListener(
+"click",
+()=>{
 
+
+    if(
+        actionLock()
+    ){
+
+
+        completeMission(
+            "openBox"
         );
 
-    };
 
-}
+    }
 
-// ---------- Extra Reward ----------
 
-const extraBtn = document.getElementById("watchKeyAd");
+});
 
-if (extraBtn) {
 
-    extraBtn.onclick = () => {
 
-        claimReward(
 
-            25,
 
-            "📦 Bonus Reward Ready!"
 
+document
+.getElementById("offerCash")
+.addEventListener(
+"click",
+()=>{
+
+
+    if(
+        actionLock()
+    ){
+
+
+        completeMission(
+            "watchAd"
         );
 
-    };
+
+    }
+
+
+});
+
+
+
+
+
+
+/* ==========================================
+STATS DISPLAY
+========================================== */
+
+
+console.log(
+"User:",
+userData.telegramName
+);
+
+
+console.log(
+"Streak:",
+userData.streak
+);
+
+
+console.log(
+"Reward Land Ready 🔥"
+);
+/* ==========================================
+REWARD LAND
+APP.JS - PART 5
+UI EXPERIENCE SYSTEM
+========================================== */
+
+
+
+
+
+/* ==========================================
+LEVEL UI
+========================================== */
+
+
+function updateLevelUI(){
+
+
+    const activity =
+    userData.activities;
+
+
+
+    const current =
+    activity % 5;
+
+
+
+    const percent =
+    (current / 5) * 100;
+
+
+
+    const bar =
+    document.getElementById(
+        "levelProgress"
+    );
+
+
+
+    const text =
+    document.getElementById(
+        "levelText"
+    );
+
+
+
+    const streak =
+    document.getElementById(
+        "streakCount"
+    );
+
+
+
+    if(bar){
+
+        bar.style.width =
+        percent + "%";
+
+    }
+
+
+
+    if(text){
+
+        text.innerText =
+        `${current} / 5 activities`;
+
+    }
+
+
+
+    if(streak){
+
+        streak.innerText =
+        userData.streak || 0;
+
+    }
+
+
 
 }
 
-// ---------- Daily Bonus ----------
 
-const dailyBtn = document.getElementById("claimDaily");
 
-if (dailyBtn) {
 
-    dailyBtn.onclick = () => {
+updateLevelUI();
 
-        const today = new Date().toDateString();
 
-        const claimed = localStorage.getItem("dailyReward");
 
-        if (claimed === today) {
 
-            alert("✅ Today's reward has already been claimed.");
 
-            return;
 
-        }
+/* ==========================================
+OVERRIDE UPDATE UI
+========================================== */
 
-        localStorage.setItem(
 
-            "dailyReward",
+const oldUpdateUI =
+updateUI;
 
-            today
 
-        );
 
-        claimReward(
+updateUI = function(){
 
-            50,
 
-            "📅 Daily Bonus Ready!"
+    oldUpdateUI();
 
-        );
 
-    };
+    updateLevelUI();
 
-}
 
-// ---------- Premium Reward ----------
+};
 
-const premiumBtn = document.getElementById("buyGolden");
 
-if (premiumBtn) {
 
-    premiumBtn.onclick = () => {
 
-        claimReward(
 
-            30,
 
-            "⭐ Premium Reward Ready!"
 
-        );
+/* ==========================================
+REWARD ANIMATION
+========================================== */
 
-    };
 
-}
+function rewardAnimation(){
 
-// ---------- VIP Reward ----------
 
-const vipBtn = document.getElementById("buyPink");
+    const balance =
+    document.querySelector(
+        ".reward-card"
+    );
 
-if (vipBtn) {
 
-    vipBtn.onclick = () => {
 
-        claimReward(
+    if(!balance)
+        return;
 
-            40,
 
-            "💎 VIP Reward Ready!"
 
-        );
+    balance.classList.remove(
+        "reward-pop"
+    );
 
-    };
 
-}
-// =====================================
-// PART 4
-// REWARD PROGRESS
-// START APP
-// =====================================
 
-// ---------- Reward Progress ----------
+    void balance.offsetWidth;
 
-function checkRewardLevel(){
 
-    if(totalRewards >= 10){
 
-        rewardLevel = 2;
+    balance.classList.add(
+        "reward-pop"
+    );
 
-    }
-
-    if(totalRewards >= 30){
-
-        rewardLevel = 3;
-
-    }
-
-    if(totalRewards >= 60){
-
-        rewardLevel = 4;
-
-    }
-
-    if(totalRewards >= 100){
-
-        rewardLevel = 5;
-
-    }
-
-    saveData();
 
 }
 
-// ---------- Achievement ----------
 
-const achievementScreen =
-document.getElementById("achievementScreen");
 
-if(achievementScreen){
 
-    achievementScreen.innerHTML=`
 
-        <div class="screen-header">
+/* ==========================================
+TOAST MESSAGE
+========================================== */
 
-            <button
-                class="back-btn"
-                id="backAchievement">
 
-                ←
+function showToast(message){
 
-            </button>
 
-            <h1>
 
-                🔥 Reward Progress
+    const toast =
+    document.createElement(
+        "div"
+    );
 
-            </h1>
 
-        </div>
 
-        <div class="achievement-list">
+    toast.className =
+    "toast";
 
-            <div class="achievement">
 
-                <h3>
 
-                    ⭐ Current Level
+    toast.innerText =
+    message;
 
-                </h3>
 
-                <p id="levelText">
 
-                    Level 1
+    document.body.appendChild(
+        toast
+    );
 
-                </p>
 
-            </div>
 
-            <div class="achievement">
+    setTimeout(()=>{
 
-                <h3>
 
-                    🎁 Total Rewards
+        toast.remove();
 
-                </h3>
 
-                <p id="rewardText">
+    },2500);
 
-                    0
 
-                </p>
-
-            </div>
-
-            <div class="achievement">
-
-                <h3>
-
-                    📈 Total Activities
-
-                </h3>
-
-                <p id="activityText">
-
-                    0
-
-                </p>
-
-            </div>
-
-        </div>
-
-    `;
 
 }
 
-// ---------- Refresh Progress ----------
 
-function refreshProgress(){
 
-    checkRewardLevel();
 
-    const level=document.getElementById("levelText");
 
-    const reward=document.getElementById("rewardText");
 
-    const activity=document.getElementById("activityText");
 
-    if(level){
+/* ==========================================
+HOOK REWARD EFFECT
+========================================== */
 
-        level.innerHTML=
 
-        "Level "+rewardLevel;
+const oldAddReward =
+addReward;
 
-    }
 
-    if(reward){
 
-        reward.innerHTML=
+addReward = function(amount){
 
-        rewards;
 
-    }
 
-    if(activity){
+    oldAddReward(amount);
 
-        activity.innerHTML=
 
-        totalRewards;
 
-    }
+    rewardAnimation();
+
+
+    showToast(
+        `💰 +${amount} coins`
+    );
+
+
+};
+
+
+
+
+
+
+
+/* ==========================================
+FAKE LOADING EFFECT
+========================================== */
+
+
+function rewardLoading(callback){
+
+
+
+    openPopup(
+
+        "⏳ Processing",
+
+        "Checking reward activity..."
+
+    );
+
+
+
+    setTimeout(()=>{
+
+
+        closePopup();
+
+
+        callback();
+
+
+
+    },1500);
+
+
 
 }
 
-// ---------- Back Button ----------
 
-setTimeout(()=>{
 
-    const back=document.getElementById("backAchievement");
-
-    if(back){
-
-        back.onclick=()=>{
-
-            showScreen("homeScreen");
-
-        }
-
-    }
-
-},100);
-
-// ---------- Auto Refresh ----------
-
-setInterval(()=>{
-
-    refreshProgress();
-
-},1000);
-
-// ---------- Start ----------
-
-updateUI();
-
-refreshProgress();
-
-showScreen("homeScreen");
-
-console.log("💸 Reward Land Ready");
+console.log(
+"UI Experience Loaded ✨"
+);
