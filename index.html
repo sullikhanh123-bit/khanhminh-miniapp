@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>🐹 Coin Land</title>
+    <title>💸 Reward Land</title>
 
     <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -33,7 +33,7 @@
         <div class="profile">
 
             <div class="avatar" id="avatar">
-                🐹
+                💸
             </div>
 
             <div class="profile-info">
@@ -43,7 +43,7 @@
                 </h2>
 
                 <p>
-                    Welcome back!
+                    Unlock your next reward today.
                 </p>
 
             </div>
@@ -53,7 +53,7 @@
         <div class="coin-card">
 
             <span class="coin-icon">
-                🪙
+                💰
             </span>
 
             <span id="coin">
@@ -71,33 +71,33 @@
         <section class="welcome-card">
 
             <h1>
-                🐹 Coin Land
+                💸 Reward Land
             </h1>
 
             <p>
-                Play mini games, earn coins and unlock rewards.
+                Complete activities, unlock rewards and discover exciting bonus opportunities.
             </p>
 
         </section>
 
-        <!-- Hamster -->
+        <!-- Reward Center -->
 
         <div class="menu-card">
 
             <div class="left">
 
                 <div class="emoji">
-                    🐹
+                    💸
                 </div>
 
                 <div>
 
                     <h2>
-                        Hamster Clicker
+                        Reward Center
                     </h2>
 
                     <p>
-                        Tap to earn coins.
+                        Start your first free reward activity.
                     </p>
 
                 </div>
@@ -106,30 +106,30 @@
 
             <button id="btnHamster">
 
-                PLAY
+                START
 
             </button>
 
         </div>
 
-        <!-- Mystery -->
+        <!-- Reward Box -->
 
         <div class="menu-card">
 
             <div class="left">
 
                 <div class="emoji">
-                    📦
+                    🎁
                 </div>
 
                 <div>
 
                     <h2>
-                        Mystery Box
+                        Reward Box
                     </h2>
 
                     <p>
-                        Open random rewards.
+                        Open mystery rewards and surprise bonuses.
                     </p>
 
                 </div>
@@ -144,24 +144,24 @@
 
         </div>
 
-        <!-- Daily -->
+        <!-- Daily Bonus -->
 
         <div class="menu-card">
 
             <div class="left">
 
                 <div class="emoji">
-                    🎁
+                    📅
                 </div>
 
                 <div>
 
                     <h2>
-                        Daily Reward
+                        Daily Bonus
                     </h2>
 
                     <p>
-                        Claim today's gift.
+                        Claim your daily reward every 24 hours.
                     </p>
 
                 </div>
@@ -176,24 +176,24 @@
 
         </div>
 
-        <!-- Shop -->
+        <!-- Offers -->
 
         <div class="menu-card">
 
             <div class="left">
 
                 <div class="emoji">
-                    🛒
+                    ⭐
                 </div>
 
                 <div>
 
                     <h2>
-                        Shop
+                        Special Offers
                     </h2>
 
                     <p>
-                        Buy skins and upgrades.
+                        Complete featured activities for more rewards.
                     </p>
 
                 </div>
@@ -202,30 +202,30 @@
 
             <button id="btnShop">
 
-                ENTER
+                VIEW
 
             </button>
 
         </div>
 
-        <!-- Achievement -->
+        <!-- Progress -->
 
         <div class="menu-card">
 
             <div class="left">
 
                 <div class="emoji">
-                    🏆
+                    🔥
                 </div>
 
                 <div>
 
                     <h2>
-                        Achievement
+                        Reward Progress
                     </h2>
 
                     <p>
-                        View your progress.
+                        Track completed activities and unlocked bonuses.
                     </p>
 
                 </div>
@@ -234,14 +234,14 @@
 
             <button id="btnAchievement">
 
-                VIEW
+                DETAILS
 
             </button>
 
         </div>
 
     </main>
-    <!-- ================= HAMSTER SCREEN ================= -->
+        <!-- ================= REWARD CENTER ================= -->
 
     <section id="hamsterScreen" class="screen">
 
@@ -252,14 +252,14 @@
             </button>
 
             <h1>
-                🐹 Hamster Clicker
+                💸 Reward Center
             </h1>
 
         </div>
 
         <div class="coin-display">
 
-            🪙 <span id="hamsterCoin">0</span>
+            💰 <span id="hamsterCoin">0</span>
 
         </div>
 
@@ -267,13 +267,13 @@
 
             <button id="hamsterBtn" class="hamster-btn">
 
-                🐹
+                🎁
 
             </button>
 
             <p>
 
-                Tap the hamster to earn coins!
+                Tap to unlock your reward.
 
             </p>
 
@@ -283,20 +283,22 @@
 
             <h3>
 
-                ⚡ Coin Boost
+                📺 Unlock More Rewards
 
             </h3>
 
             <p>
 
-                Watch an advertisement to receive
-                <strong>x2 Coins for 30 seconds.</strong>
+                Your first reward is free.
+                <br><br>
+
+                Every additional reward requires watching a short sponsored video.
 
             </p>
 
             <button id="watchBoost">
 
-                📺 Watch Ad
+                ▶ Continue
 
             </button>
 
@@ -310,13 +312,13 @@
 
             <h3>
 
-                📈 Statistics
+                📊 Reward Statistics
 
             </h3>
 
             <div class="stat-row">
 
-                <span>Total Taps</span>
+                <span>Rewards Claimed</span>
 
                 <span id="totalTap">
 
@@ -328,7 +330,7 @@
 
             <div class="stat-row">
 
-                <span>Total Coins</span>
+                <span>Total Rewards</span>
 
                 <span id="totalCoin">
 
@@ -342,7 +344,7 @@
 
     </section>
 
-    <!-- ================= MYSTERY BOX ================= -->
+    <!-- ================= REWARD BOX ================= -->
 
     <section id="mysteryScreen" class="screen">
 
@@ -356,7 +358,7 @@
 
             <h1>
 
-                📦 Mystery Box
+                🎁 Reward Box
 
             </h1>
 
@@ -366,7 +368,7 @@
 
             <h3>
 
-                🔑 Keys
+                🎟 Available Boxes
 
             </h3>
 
@@ -382,13 +384,13 @@
 
             <button id="openMysteryBox" class="box-btn">
 
-                📦
+                🎁
 
             </button>
 
             <p>
 
-                Tap the box to open it.
+                Open your free reward box.
 
             </p>
 
@@ -398,7 +400,7 @@
 
             📺 Watch Ad
             <br>
-            Receive +1 Key
+            Unlock Another Box
 
         </button>
 
@@ -407,7 +409,7 @@
         </div>
 
     </section>
-        <!-- ================= DAILY REWARD ================= -->
+        <!-- ================= DAILY BONUS ================= -->
 
     <section id="dailyScreen" class="screen">
 
@@ -417,18 +419,26 @@
                 ←
             </button>
 
-            <h1>🎁 Daily Reward</h1>
+            <h1>
+                📅 Daily Bonus
+            </h1>
 
         </div>
 
         <div class="daily-card">
 
             <h2>
-                Check-in mỗi ngày
+
+                Claim Today's Bonus
+
             </h2>
 
             <p>
-                Nhận Coin miễn phí mỗi 24 giờ.
+
+                Every day you can claim one free reward.
+                <br><br>
+                After claiming, watch a short sponsored video to unlock another bonus.
+
             </p>
 
             <div class="daily-days">
@@ -465,7 +475,7 @@
 
             <button id="claimDaily">
 
-                🎁 Claim Reward
+                🎁 Claim Bonus
 
             </button>
 
@@ -477,7 +487,7 @@
 
     </section>
 
-    <!-- ================= SHOP ================= -->
+    <!-- ================= SPECIAL OFFERS ================= -->
 
     <section id="shopScreen" class="screen">
 
@@ -488,7 +498,9 @@
             </button>
 
             <h1>
-                🛒 Shop
+
+                ⭐ Special Offers
+
             </h1>
 
         </div>
@@ -499,25 +511,25 @@
 
                 <div class="skin">
 
-                    🐹
+                    🎁
 
                 </div>
 
                 <h3>
 
-                    Classic
+                    Reward Pack
 
                 </h3>
 
                 <p>
 
-                    Free
+                    Free Once
 
                 </p>
 
                 <button>
 
-                    Using
+                    CLAIM
 
                 </button>
 
@@ -527,25 +539,25 @@
 
                 <div class="skin">
 
-                    🐹✨
+                    💸
 
                 </div>
 
                 <h3>
 
-                    Golden
+                    Premium Reward
 
                 </h3>
 
                 <p>
 
-                    5000 Coins
+                    Watch Ad
 
                 </p>
 
                 <button id="buyGolden">
 
-                    Buy
+                    UNLOCK
 
                 </button>
 
@@ -555,25 +567,25 @@
 
                 <div class="skin">
 
-                    🩷🐹
+                    ⭐
 
                 </div>
 
                 <h3>
 
-                    Pink
+                    VIP Bonus
 
                 </h3>
 
                 <p>
 
-                    10000 Coins
+                    Watch Ad
 
                 </p>
 
                 <button id="buyPink">
 
-                    Buy
+                    CLAIM
 
                 </button>
 
@@ -582,139 +594,3 @@
         </div>
 
     </section>
-
-    <!-- ================= ACHIEVEMENTS ================= -->
-
-    <section id="achievementScreen" class="screen">
-
-        <div class="screen-header">
-
-            <button class="back-btn" id="backHome5">
-                ←
-            </button>
-
-            <h1>
-
-                🏆 Achievements
-
-            </h1>
-
-        </div>
-
-        <div class="achievement-list">
-
-            <div class="achievement">
-
-                <h3>
-
-                    👆 First Tap
-
-                </h3>
-
-                <p>
-
-                    Tap 100 lần.
-
-                </p>
-
-            </div>
-
-            <div class="achievement">
-
-                <h3>
-
-                    📦 Collector
-
-                </h3>
-
-                <p>
-
-                    Mở 10 Mystery Box.
-
-                </p>
-
-            </div>
-
-            <div class="achievement">
-
-                <h3>
-
-                    🎁 Loyal Player
-
-                </h3>
-
-                <p>
-
-                    Check-in 7 ngày liên tiếp.
-
-                </p>
-
-            </div>
-
-            <div class="achievement">
-
-                <h3>
-
-                    💰 Rich Player
-
-                </h3>
-
-                <p>
-
-                    Sở hữu 10.000 Coin.
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================= POPUP ================= -->
-
-    <div id="rewardPopup" class="popup">
-
-        <div class="popup-content">
-
-            <h2>
-
-                🎉 Congratulations!
-
-            </h2>
-
-            <p id="popupReward">
-
-                You received 50 Coins!
-
-            </p>
-
-            <button id="closePopup">
-
-                OK
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-
-        <p>
-
-            Coin Land © 2026
-
-        </p>
-
-    </footer>
-
-</div>
-
-<script src="app.js"></script>
-
-</body>
-
-</html>
